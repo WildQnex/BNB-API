@@ -20,26 +20,31 @@ namespace BNB_API
             InitializeComponent();
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
-            string url = "http://www.nbrb.by/API/ExRates/Currencies";
-            string source = new WebClient().DownloadString(url);
-            dynamic obj = JArray.Parse(source);
-            string title;
-            foreach (dynamic el in obj)
-            {
-                title = "";
-                foreach (string tit in el)
+            string url = "http://www.nbrb.by/API/ExRates/Rates?Periodicity=0";
+            var webClient = new WebClient();
+            webClient.Encoding = System.Text.Encoding.UTF8;
+            string source;
+            dynamic obj;
+            try {
+                source = webClient.DownloadString(url);
+                obj = JArray.Parse(source);
+                string title;
+                foreach (dynamic el in obj)
                 {
-                    title = title + tit + "  |  ";
+                    title = "";
+                    foreach (string tit in el)
+                    {
+                        title = title + tit + "  |  ";
+                    }
+                    Box.Items.Add(title);
                 }
-                Box.Items.Add(title);
+            } catch {
+                Box.Items.Add("Error. Check your internet connection");
             }
         }
+
+      
     }
 }
