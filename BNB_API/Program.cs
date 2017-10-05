@@ -3,7 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Windows.Forms;
-
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace BNB_API
 {
@@ -20,31 +21,34 @@ namespace BNB_API
     }
 
     static class Updater{
-        public static Data UpdateData(){
-            Data data = new Data();
-            string url = "http://www.nbrb.by/API/ExRates/Rates?Periodicity=0";
-            var webClient = new WebClient();
-            webClient.Encoding = System.Text.Encoding.UTF8;
-            try {
-                string source = webClient.DownloadString(url);
-                dynamic obj = JArray.Parse(source);
-                string title;
-                foreach (dynamic el in obj)
-                {
-                    title = el.Cur_Scale + " " + el.Cur_Name + " (" + el.Cur_Abbreviation + ") = "
-                        + el.Cur_OfficialRate + " Рубля";
-                    data.addCurrency(title);
-                    data.setUpdateTime(el.Date.ToString());
+        private const string URL = "http://www.nbrb.by/API/ExRates/Rates?Periodicity=0";
+        public async static Task<DataRes> UpdateDataAsync(){
+            return await Task.Run(() =>
+            {
+                DataRes data = new DataRes();
+                var webClient = new WebClient();
+                webClient.Encoding = System.Text.Encoding.UTF8;
+                try {
+                    string source = webClient.DownloadString(URL);
+                    dynamic obj = JArray.Parse(source);
+                    string title;
+                    foreach (dynamic el in obj){
+                            title = el.Cur_Scale + " " + el.Cur_Name + " (" + el.Cur_Abbreviation + ") = "
+                              + el.Cur_OfficialRate + " Рубля";
+                            data.addCurrency(title);
+                            data.setUpdateTime(el.Date.ToString());
+                    }
+                    data.setCurTime(DateTime.Now.ToString());
+                } catch {
+                    data.addCurrency("Error. Check your internet connection");
                 }
-                data.setCurTime(DateTime.Now.ToString());
-            } catch {
-                data.addCurrency("Error. Check your internet connection");
-            }
-            return data;
+                return data;
+            });
+            
         }
     }
 
-    class Data
+    class DataRes
     {
         private string curTime;
         private string updateTime;
@@ -66,13 +70,11 @@ namespace BNB_API
             this.curTime = curTime;
         }
 
-        public string getUpdateTime()
-        {
+        public string getUpdateTime(){
             return updateTime;
         }
 
-        public void setUpdateTime(string updateTime)
-        {
+        public void setUpdateTime(string updateTime){
             this.updateTime = updateTime;
         }
 
