@@ -52,7 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data.cs" />
+    <Compile Include="Updater.cs" />
+    <Compile Include="DataRes.cs" />
     <Compile Include="FormBNB.cs">
       <SubType>Form</SubType>
     </Compile>

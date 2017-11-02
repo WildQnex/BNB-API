@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BNB_API
@@ -39,22 +38,31 @@ namespace BNB_API
             DataRes data = await Updater.UpdateDataAsync();
             Box.Items.Clear();
             label2.Text = data.getCurTime();
-            label4.Text = data.getUpdateTime();
             
             MailAddress from = new MailAddress("bsuir.project.adm@gmail.com", "Vadim");
-            MailAddress to = new MailAddress(textBox1.Text);
-            MailMessage m = new MailMessage(from, to);
-            
-            m.Subject = "Курс Валют";
-            foreach (string item in data.getCurrenciesList())
+            try
             {
-                m.Body += item + "\n";
+                MailAddress to = new MailAddress(textBox1.Text);
+            
+                MailMessage m = new MailMessage(from, to);
+            
+                m.Subject = "Курс Валют";
+                foreach (string item in data.getCurrenciesList())
+                {
+                    m.Body += item + "\n";
+                }
+            
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+                smtp.Credentials = new NetworkCredential("bsuir.project.adm@gmail.com", "Evolato3147");
+                smtp.EnableSsl = true;
+                await smtp.SendMailAsync(m);
+                Box.Items.Add("Письмо отправлено");
             }
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("bsuir.project.adm@gmail.com", "Evolato3147");
-            smtp.EnableSsl = true;
-            await smtp.SendMailAsync(m);
-            Box.Items.Add("Письмо отправлено");
-        }
+            catch
+            {
+                Box.Items.Add("Некоректынй e-mail");
+            }
+
+            }
     }
 }
