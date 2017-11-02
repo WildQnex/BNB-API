@@ -3,25 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebService", ".", "{3DBBF559-948B-4F79-9B46-6D3F730EDD62}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebService", "..\..\WebService\", "{3DBBF559-948B-4F79-9B46-6D3F730EDD62}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_3030"
-		Debug.AspNetCompiler.PhysicalPath = "..\WebService\"
+		Debug.AspNetCompiler.PhysicalPath = "D:\Univer\WebService\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_3030\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/localhost_3030"
-		Release.AspNetCompiler.PhysicalPath = "..\WebService\"
+		Release.AspNetCompiler.PhysicalPath = "D:\Univer\WebService\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_3030\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "3030"
-		SlnRelativePath = "..\WebService\"
 	EndProjectSection
 EndProject
 Global

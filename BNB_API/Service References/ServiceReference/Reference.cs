@@ -15,11 +15,11 @@ namespace BNB_API.ServiceReference {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IService")]
     public interface IService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetAPI", ReplyAction="http://tempuri.org/IService/GetAPIResponse")]
-        string GetAPI();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetData", ReplyAction="http://tempuri.org/IService/GetDataResponse")]
+        string GetData();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetAPI", ReplyAction="http://tempuri.org/IService/GetAPIResponse")]
-        System.Threading.Tasks.Task<string> GetAPIAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetData", ReplyAction="http://tempuri.org/IService/GetDataResponse")]
+        System.Threading.Tasks.Task<string> GetDataAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -49,12 +49,12 @@ namespace BNB_API.ServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public string GetAPI() {
-            return base.Channel.GetAPI();
+        public string GetData() {
+            return base.Channel.GetData();
         }
         
-        public System.Threading.Tasks.Task<string> GetAPIAsync() {
-            return base.Channel.GetAPIAsync();
+        public System.Threading.Tasks.Task<string> GetDataAsync() {
+            return base.Channel.GetDataAsync();
         }
     }
 }

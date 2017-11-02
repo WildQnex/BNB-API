@@ -39,7 +39,7 @@ namespace BNB_API
             Box.Items.Clear();
             label2.Text = data.getCurTime();
             
-            MailAddress from = new MailAddress("bsuir.project.adm@gmail.com", "Vadim");
+            MailAddress from = new MailAddress("bsuir.project.adm@gmail.com", "Vadim Martinyuk");
             try
             {
                 MailAddress to = new MailAddress(textBox1.Text);
@@ -58,7 +58,7 @@ namespace BNB_API
                 await smtp.SendMailAsync(m);
                 Box.Items.Add("Письмо отправлено");
             }
-            catch
+            catch(Exception ex)
             {
                 Box.Items.Add("Некоректынй e-mail");
             }

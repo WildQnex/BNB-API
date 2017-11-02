@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace BNB_API
                 DataRes data = new DataRes();
                 try
                 {
-                    string result = client.GetAPI();
+                    string result = client.GetData();
                     MemoryStream stream = new MemoryStream();
                     StreamWriter writer = new StreamWriter(stream);
                     writer.Write(result);
@@ -23,7 +24,7 @@ namespace BNB_API
                     var dcs = new DataContractSerializer(typeof(DataRes));
                     data = (DataRes)dcs.ReadObject(stream);
                 }
-                catch
+                catch(Exception ex)
                 {
                     data.addCurrency("Сервис занят");
                 }
