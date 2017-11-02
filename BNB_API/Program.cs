@@ -5,10 +5,15 @@ using System.Net;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Xml.Serialization;
+using System.IO;
+using System.Xml;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 
 namespace BNB_API
 {
-    static class Program
+    public class Program
     {
         [STAThread]
         static void Main()
@@ -20,27 +25,26 @@ namespace BNB_API
         }
     }
 
-    static class Updater{
-        private const string URL = "http://www.nbrb.by/API/ExRates/Rates?Periodicity=0";
+    public class Updater{
         public async static Task<DataRes> UpdateDataAsync(){
             return await Task.Run(() =>
             {
+                ServiceReference.ServiceClient client = new ServiceReference.ServiceClient();
                 DataRes data = new DataRes();
-                var webClient = new WebClient();
-                webClient.Encoding = System.Text.Encoding.UTF8;
-                try {
-                    string source = webClient.DownloadString(URL);
-                    dynamic obj = JArray.Parse(source);
-                    string title;
-                    foreach (dynamic el in obj){
-                            title = el.Cur_Scale + " " + el.Cur_Name + " (" + el.Cur_Abbreviation + ") = "
-                              + el.Cur_OfficialRate + " Рубля";
-                            data.addCurrency(title);
-                            data.setUpdateTime(el.Date.ToString());
-                    }
-                    data.setCurTime(DateTime.Now.ToString());
-                } catch {
-                    data.addCurrency("Error. Check your internet connection");
+                try
+                {
+                string result = client.GetAPI();
+                MemoryStream stream = new MemoryStream();
+                StreamWriter writer = new StreamWriter(stream);
+                writer.Write(result);
+                writer.Flush();
+                stream.Position = 0;
+                var dcs = new DataContractSerializer(typeof(DataRes));
+                data = (DataRes)dcs.ReadObject(stream);
+                }
+                catch
+                {
+                    data.addCurrency("Сервис занят");
                 }
                 return data;
             });
@@ -48,35 +52,5 @@ namespace BNB_API
         }
     }
 
-    class DataRes
-    {
-        private string curTime;
-        private string updateTime;
-        private List<string> currenciesList = new List<string>();
 
-        public void addCurrency(string currency){
-            currenciesList.Add(currency);
-        }
-
-        public List<string> getCurrenciesList(){
-            return currenciesList;
-        }
-
-        public string getCurTime(){
-            return curTime;
-        }
-
-        public void setCurTime(string curTime){
-            this.curTime = curTime;
-        }
-
-        public string getUpdateTime(){
-            return updateTime;
-        }
-
-        public void setUpdateTime(string updateTime){
-            this.updateTime = updateTime;
-        }
-
-    }
 }
